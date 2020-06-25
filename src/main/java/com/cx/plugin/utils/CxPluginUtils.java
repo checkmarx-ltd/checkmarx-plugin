@@ -149,13 +149,17 @@ public abstract class CxPluginUtils {
             }
 
             //add webapp sources
-            File[] webappDir = sourceDir.getParentFile().listFiles(new FilenameFilter() {
-                public boolean accept(File directory, String fileName) {
-                    return fileName.endsWith("webapp");
+            try {
+                File[] webappDir = sourceDir.getParentFile().listFiles(new FilenameFilter() {
+                    public boolean accept(File directory, String fileName) {
+                        return fileName.endsWith("webapp");
+                    }
+                });
+                if (webappDir != null && webappDir.length > 0 && webappDir[0].exists()) {
+                    zipArchiver.addDirectory(webappDir[0], prefix);
                 }
-            });
-            if (webappDir != null && webappDir.length > 0 && webappDir[0].exists()) {
-                zipArchiver.addDirectory(webappDir[0], prefix);
+            } catch (Exception e) {
+                log.debug("Fail to add webapp dir to zip: " + e.getMessage());
             }
 
             //add resources
