@@ -78,6 +78,10 @@
                     <artifactId>dom4j</artifactId>
                     <groupId>dom4j</groupId>
                 </exclusion>
+                <exclusion>
+                    <groupId>commons-collections</groupId>
+    				<artifactId>commons-collections</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
@@ -122,8 +126,42 @@
                     <groupId>io.vertx</groupId>
                     <artifactId>vertx-core</artifactId>
                 </exclusion>
-            </exclusions>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-databind</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.freemarker</groupId>
+    				<artifactId>freemarker</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.github.junrar</groupId>
+    				<artifactId>junrar</artifactId>
+                </exclusion>
+            </exclusions> 
         </dependency>
+        
+        <dependency>
+    		<groupId>com.github.junrar</groupId>
+    		<artifactId>junrar</artifactId>
+    		<version>7.5.1</version>
+		</dependency>
+        <dependency>
+    		<groupId>org.freemarker</groupId>
+    		<artifactId>freemarker</artifactId>
+    		<version>2.3.31</version>
+		</dependency>   
+        <dependency>
+    		<groupId>com.fasterxml.jackson.core</groupId>
+    		<artifactId>jackson-databind</artifactId>
+    		<version>2.13.2.2</version>
+		</dependency>
+        <dependency>
+    		<groupId>commons-collections</groupId>
+    		<artifactId>commons-collections</artifactId>
+    		<version>3.2.2</version>
+		</dependency>
+        
     </dependencies>
     <distributionManagement>
         <snapshotRepository>
