@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.checkmarx.maven</groupId>
     <artifactId>checkmarx-maven-plugin</artifactId>
-    <version>2022.2.1</version>
+    <version>2022.2.2</version>
     <packaging>maven-plugin</packaging>
     <name>Checkmarx Maven Plugin</name>
     <description>Enables a maven project to integrate with Checkmarx SAST scan.</description>
@@ -96,7 +96,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
-            <version>1.19</version>
+            <version>1.21</version>
         </dependency>     
         <dependency>
             <groupId>org.codehaus.plexus</groupId>
