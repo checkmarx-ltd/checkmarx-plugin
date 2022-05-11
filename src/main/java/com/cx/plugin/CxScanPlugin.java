@@ -389,7 +389,6 @@ public class CxScanPlugin extends AbstractMojo {
             //Asynchronous mode
             if(!config.getSynchronous())
             {
-            	log.info("<debug>Running in Asynchronous mode. Not waiting for scan to finish.");
             	ScanResults finalScanResults = getFinalScanResults(results);
                 String scanHTMLSummary = delegator.generateHTMLSummary(finalScanResults);
                 ret.getSummary().put(HTML_REPORT, scanHTMLSummary);
@@ -450,7 +449,8 @@ public class CxScanPlugin extends AbstractMojo {
         return file;
     }
 
-    private CxScanConfig resolveConfigurationMap() throws MojoExecutionException {    	
+    private CxScanConfig resolveConfigurationMap() throws MojoExecutionException { 
+    	String folderExclusionsString = "";
         CxScanConfig scanConfig = new CxScanConfig();
         scanConfig.setCxOrigin(PLUGIN_ORIGIN);
         scanConfig.setSastEnabled(true);
@@ -473,6 +473,13 @@ public class CxScanPlugin extends AbstractMojo {
         scanConfig.setSastMediumThreshold(mediumSeveritiesThreshold);
         scanConfig.setSastLowThreshold(lowSeveritiesThreshold);
         scanConfig.setGeneratePDFReport(generatePDFReport);
+            
+        for (String folder : folderExclusions){
+        	folderExclusionsString = folderExclusionsString + folder + ","; 
+        }
+        folderExclusionsString = folderExclusionsString.substring(0, folderExclusionsString.length() - 1);        
+        scanConfig.setSastFolderExclusions(folderExclusionsString);
+        
         if(osaEnabled){
         	scanConfig.addScannerType(ScannerType.OSA);
         }
