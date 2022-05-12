@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.checkmarx.maven</groupId>
     <artifactId>checkmarx-maven-plugin</artifactId>
-    <version>9.00.2</version>
+    <version>9.00.3</version>
     <packaging>maven-plugin</packaging>
     <name>Checkmarx Maven Plugin</name>
     <description>Enables a maven project to integrate with Checkmarx SAST scan.</description>
@@ -110,6 +110,10 @@
             <version>${common.client.version}</version>
             <exclusions>
                 <exclusion>
+                    <groupId>org.restlet.lib</groupId>
+                    <artifactId>org.simpleframework.simple-xml</artifactId>
+                </exclusion>
+                <exclusion>
                     <artifactId>guava</artifactId>
                     <groupId>com.google.guava</groupId>
                 </exclusion>
@@ -118,6 +122,11 @@
                     <artifactId>vertx-core</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.simpleframework</groupId>
+            <artifactId>simple-xml</artifactId>
+            <version>2.7.1</version>
         </dependency>
     </dependencies>
     <distributionManagement>
@@ -230,7 +239,7 @@
                         <artifactId>maven-gpg-plugin</artifactId>
                         <version>1.5</version>
                         <configuration>
-                            <executable>C:\Program Files (x86)\GNU\GnuPG\gpg2.exe</executable>
+                            <executable>C:\Program Files (x86)\gnupg\bin\gpg.exe</executable>
                             <passphrase>Checkmarx123456</passphrase>
                         </configuration>
                         <executions>
@@ -272,19 +281,6 @@
             </roles>
             <properties>
                 <picUrl>http://i.imgur.com/SSm4Onr.jpg</picUrl>
-            </properties>
-        </developer>
-        <developer>
-            <name>Guy 'Sushi' Zahavi</name>
-            <email>Guy.Zahavi@checkmarx.com</email>
-            <organization>Checkmarx</organization>
-            <organizationUrl>https://www.checkmarx.com/</organizationUrl>
-            <roles>
-                <role>Front-end Developer</role>
-                <role>Documentarist</role>
-            </roles>
-            <properties>
-                <picUrl>http://i.imgur.com/N9YR2c0.jpg</picUrl>
             </properties>
         </developer>
         <developer>
