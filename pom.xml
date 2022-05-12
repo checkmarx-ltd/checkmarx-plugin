@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.checkmarx.maven</groupId>
     <artifactId>checkmarx-maven-plugin</artifactId>
-    <version>2020.1.1</version>
+    <version>2022.2.3</version>
     <packaging>maven-plugin</packaging>
     <name>Checkmarx Maven Plugin</name>
     <description>Enables a maven project to integrate with Checkmarx SAST scan.</description>
@@ -26,7 +26,7 @@
         <log4j.version>1.2.17</log4j.version>
         <slf4j.version>1.7.5</slf4j.version>
         <cxf.version>2.2.3</cxf.version>
-        <common.client.version>2020.1.6.NO.SCA</common.client.version>
+        <common.client.version>2022.1.10</common.client.version>
 
         <sonar.projectKey>checkmarx-ltd_checkmarx-plugin</sonar.projectKey>
         <sonar.organization>checkmarx-ltd</sonar.organization>
@@ -78,6 +78,14 @@
                     <artifactId>dom4j</artifactId>
                     <groupId>dom4j</groupId>
                 </exclusion>
+                <exclusion>
+                    <groupId>commons-collections</groupId>
+    				<artifactId>commons-collections</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-io</groupId>
+    				<artifactId>commons-io</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
@@ -96,7 +104,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
-            <version>1.19</version>
+            <version>1.21</version>
         </dependency>     
         <dependency>
             <groupId>org.codehaus.plexus</groupId>
@@ -122,8 +130,47 @@
                     <groupId>io.vertx</groupId>
                     <artifactId>vertx-core</artifactId>
                 </exclusion>
-            </exclusions>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-databind</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.freemarker</groupId>
+    				<artifactId>freemarker</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.github.junrar</groupId>
+    				<artifactId>junrar</artifactId>
+                </exclusion>
+            </exclusions> 
         </dependency>
+        
+        <dependency>
+    		<groupId>commons-io</groupId>
+    		<artifactId>commons-io</artifactId>
+    		<version>2.11.0</version>
+		</dependency>
+        <dependency>
+    		<groupId>com.github.junrar</groupId>
+    		<artifactId>junrar</artifactId>
+    		<version>7.5.1</version>
+		</dependency>
+        <dependency>
+    		<groupId>org.freemarker</groupId>
+    		<artifactId>freemarker</artifactId>
+    		<version>2.3.31</version>
+		</dependency>   
+        <dependency>
+    		<groupId>com.fasterxml.jackson.core</groupId>
+    		<artifactId>jackson-databind</artifactId>
+    		<version>2.13.2.2</version>
+		</dependency>
+        <dependency>
+    		<groupId>commons-collections</groupId>
+    		<artifactId>commons-collections</artifactId>
+    		<version>3.2.2</version>
+		</dependency>
+        
     </dependencies>
     <distributionManagement>
         <snapshotRepository>

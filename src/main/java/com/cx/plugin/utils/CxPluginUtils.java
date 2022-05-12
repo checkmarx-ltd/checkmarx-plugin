@@ -75,8 +75,8 @@ public abstract class CxPluginUtils {
             log.info("CxSAST medium threshold: " + (config.getSastMediumThreshold() == null ? "[No Threshold]" : config.getSastMediumThreshold()));
             log.info("CxSAST low threshold: " + (config.getSastLowThreshold() == null ? "[No Threshold]" : config.getSastLowThreshold()));
         }
-        log.info("CxOSA enabled: " + config.getOsaEnabled());
-        if (config.getOsaEnabled()) {
+        log.info("CxOSA enabled: " + config.isOsaEnabled());
+        if (config.isOsaEnabled()) {
             log.info("osaIgnoreScopes: " + Arrays.toString(osaIgnoreScopes));
             log.info("CxOSA thresholds enabled: " + config.getOsaThresholdsEnabled());
             if (config.getOsaThresholdsEnabled()) {
@@ -89,23 +89,29 @@ public abstract class CxPluginUtils {
         //todo check log.info("fileExclusions: " + Arrays.toString(fileExclusions));
     }
 
-    public static void assertBuildFailure(String thDescription, ScanResults ret) throws MojoFailureException {
-        StringBuilder builder = new StringBuilder();
-        builder.append("*****The Build Failed for the Following Reasons: *****");
-
-        appendError(ret.getGeneralException(), builder);
-        appendError(ret.getSastCreateException(), builder);
-        appendError(ret.getSastWaitException(), builder);
-        appendError(ret.getOsaCreateException(), builder);
-        appendError(ret.getOsaWaitException(), builder);
-
-        String[] lines = thDescription.split("\\n");
+    public static void printBuildFailure(String thDescription, ScanResults ret, Logger log) throws MojoFailureException
+    {
+    	StringBuilder builder = new StringBuilder();
+    	builder.append("********************************************");
+    	builder.append(" The Build Failed for the Following Reasons: ");
+    	builder.append("********************************************");
+    	appendError(ret.getGeneralException(), builder);
+    	
+    	String[] lines = thDescription.split("\\n");
         for (String s : lines) {
             builder.append(s);
         }
         builder.append("-----------------------------------------------------------------------------------------\n");
-
+    	
         throw new MojoFailureException(builder.toString());
+    }
+    
+    private static void logError(Exception ex, Logger log)
+    {
+        if (ex != null) 
+        {
+            log.error(ex.getMessage());
+        }
     }
 
     private static StringBuilder appendError(Exception ex, StringBuilder builder) {
