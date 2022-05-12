@@ -1,6 +1,5 @@
 package com.cx.plugin;
 
-
 import com.cx.restclient.CxClientDelegator;
 import com.cx.restclient.sast.utils.LegacyClient;
 import com.cx.plugin.configuration.CommonClientFactory;
@@ -12,8 +11,6 @@ import com.cx.restclient.dto.ScanResults;
 import com.cx.restclient.dto.ScannerType;
 import com.cx.restclient.dto.scansummary.ScanSummary;
 import com.cx.restclient.exception.CxClientException;
-import com.cx.restclient.osa.dto.OSAResults;
-import com.cx.restclient.sast.dto.SASTResults;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;

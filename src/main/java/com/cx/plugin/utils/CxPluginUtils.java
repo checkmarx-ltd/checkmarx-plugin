@@ -89,22 +89,21 @@ public abstract class CxPluginUtils {
         //todo check log.info("fileExclusions: " + Arrays.toString(fileExclusions));
     }
 
-    public static void printBuildFailure(String thDescription, ScanResults ret, Logger log) 
+    public static void printBuildFailure(String thDescription, ScanResults ret, Logger log) throws MojoFailureException
     {
-        log.error("********************************************");
-        log.error(" The Build Failed for the Following Reasons: ");
-        log.error("********************************************");
-        logError(ret.getGeneralException(), log);
-        if (thDescription != null) 
-        {
-            String[] lines = thDescription.split("\\n");
-            for (String s : lines) 
-            {
-                log.error(s);
-            }
+    	StringBuilder builder = new StringBuilder();
+    	builder.append("********************************************");
+    	builder.append(" The Build Failed for the Following Reasons: ");
+    	builder.append("********************************************");
+    	appendError(ret.getGeneralException(), builder);
+    	
+    	String[] lines = thDescription.split("\\n");
+        for (String s : lines) {
+            builder.append(s);
         }
-        log.error("-----------------------------------------------------------------------------------------\n");
-        log.error("");
+        builder.append("-----------------------------------------------------------------------------------------\n");
+    	
+        throw new MojoFailureException(builder.toString());
     }
     
     private static void logError(Exception ex, Logger log)
