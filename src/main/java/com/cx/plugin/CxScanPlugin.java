@@ -474,7 +474,10 @@ public class CxScanPlugin extends AbstractMojo {
         for (String folder : folderExclusions){
         	folderExclusionsString = folderExclusionsString + folder + ","; 
         }
-        folderExclusionsString = folderExclusionsString.substring(0, folderExclusionsString.length() - 1);        
+        if(!folderExclusionsString.equals(""))
+        {
+        	folderExclusionsString = folderExclusionsString.substring(0, folderExclusionsString.length() - 1);   
+        }
         scanConfig.setSastFolderExclusions(folderExclusionsString);
         
         if(osaEnabled){
