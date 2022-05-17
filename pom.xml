@@ -234,13 +234,14 @@
                             <autoReleaseAfterClose>true</autoReleaseAfterClose>
                         </configuration>
                     </plugin>
+                    <!-- jar -cvf bundle.jar checkmarx-maven-plugin-9.00.3* (change the version according to the release version) -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
                         <version>1.5</version>
                         <configuration>
                             <executable>C:\Program Files (x86)\gnupg\bin\gpg.exe</executable>
-                            <passphrase>Checkmarx123456</passphrase>
+                            <passphrase>${passphrase}</passphrase>
                         </configuration>
                         <executions>
                             <execution>
