@@ -283,7 +283,7 @@
                         <version>1.5</version>
                         <configuration>
                             <executable>C:\Program Files (x86)\GNU\GnuPG\gpg2.exe</executable>
-                            <passphrase>Checkmarx123456</passphrase>
+                            <passphrase>${passphrase}</passphrase>
                         </configuration>
                         <executions>
                             <execution>
