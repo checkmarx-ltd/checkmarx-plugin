@@ -284,6 +284,10 @@
                         <configuration>
                             <executable>C:\Program Files (x86)\GNU\GnuPG\gpg2.exe</executable>
                             <passphrase>${passphrase}</passphrase>
+							<gpgArguments>
+								<arg>--pinentry-mode</arg>
+								<arg>loopback</arg>
+							</gpgArguments>
                         </configuration>
                         <executions>
                             <execution>
