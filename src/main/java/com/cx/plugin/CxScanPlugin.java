@@ -118,6 +118,13 @@ public class CxScanPlugin extends AbstractMojo {
     @Parameter(defaultValue = "true", property = "cx.generatePDFReport")
     private boolean generatePDFReport;
 
+    /**
+     * Configure a threshold for the Critical Severity Vulnerabilities.
+     * The build will fail if the sum of Critical Severity Vulnerabilities is larger than the threshold.
+     * Leave empty to ignore threshold.
+     */
+    @Parameter(defaultValue = "-1", property = "cx.criticalSeveritiesThreshold")
+    private int criticalSeveritiesThreshold;
 
     /**
      * Configure a threshold for the High Severity Vulnerabilities.
@@ -435,8 +442,9 @@ public class CxScanPlugin extends AbstractMojo {
         scanConfig.setScanComment(comment);
         scanConfig.setIncremental(isIncrementalScan);
         scanConfig.setSynchronous(isSynchronous);
-        boolean thresholdEnabled = (highSeveritiesThreshold > 0 || mediumSeveritiesThreshold > 0 || lowSeveritiesThreshold > 0);//todo check null
+        boolean thresholdEnabled = (criticalSeveritiesThreshold > 0 || highSeveritiesThreshold > 0 || mediumSeveritiesThreshold > 0 || lowSeveritiesThreshold > 0);//todo check null
         scanConfig.setSastThresholdsEnabled(thresholdEnabled);
+        scanConfig.setSastCriticalThreshold(criticalSeveritiesThreshold);
         scanConfig.setSastHighThreshold(highSeveritiesThreshold);
         scanConfig.setSastMediumThreshold(mediumSeveritiesThreshold);
         scanConfig.setSastLowThreshold(lowSeveritiesThreshold);

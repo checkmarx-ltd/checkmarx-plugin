@@ -71,6 +71,7 @@ public abstract class CxPluginUtils {
         log.info("Policy violations enabled: " + config.getEnablePolicyViolations());
         log.info("CxSAST thresholds enabled: " + config.getSastThresholdsEnabled());
         if (config.getSastThresholdsEnabled()) {
+        	log.info("CxSAST critical threshold: " + (config.getSastCriticalThreshold() == null ? "[No Threshold]" : config.getSastCriticalThreshold()));
             log.info("CxSAST high threshold: " + (config.getSastHighThreshold() == null ? "[No Threshold]" : config.getSastHighThreshold()));
             log.info("CxSAST medium threshold: " + (config.getSastMediumThreshold() == null ? "[No Threshold]" : config.getSastMediumThreshold()));
             log.info("CxSAST low threshold: " + (config.getSastLowThreshold() == null ? "[No Threshold]" : config.getSastLowThreshold()));
