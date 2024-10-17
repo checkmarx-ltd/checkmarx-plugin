@@ -26,9 +26,6 @@
         <log4j.version>2.17.2</log4j.version>
         <slf4j.version>1.8.0-beta2</slf4j.version>
         <cxf.version>2.2.3</cxf.version>
-
-        <common.client.version>2020.1.6.NO.SCA</common.client.version>
-
         <common.client.version>2024.3.28</common.client.version>
 
         <sonar.projectKey>checkmarx-ltd_checkmarx-plugin</sonar.projectKey>
@@ -161,8 +158,7 @@
 		    <version>4.5.0-M2</version>
 		</dependency>
         
->>>>>>> Stashed changes
-    </dependencies>
+	</dependencies>
     <distributionManagement>
         <snapshotRepository>
             <id>ossrh</id>
@@ -196,7 +192,7 @@
                             <goal>report</goal>
                         </goals>
                         <phase>process-classes</phase>
-                    </execution>
+                    </execution>                    
                     <execution>
                         <id>help-descriptor</id>
                         <goals>
