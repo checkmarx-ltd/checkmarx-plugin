@@ -1,23 +1,26 @@
 package com.cx.plugin.utils;
 
 
+import com.cx.plugin.utils.SASTUtils;
 import com.cx.restclient.configuration.CxScanConfig;
 import com.cx.restclient.dto.ScanResults;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
 import org.slf4j.Logger;
+import org.sonatype.plexus.components.sec.dispatcher.DefaultSecDispatcher;
 
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
-
 import static com.cx.plugin.CxScanPlugin.SOURCES_ZIP_NAME;
 
 /**
@@ -57,6 +60,7 @@ public abstract class CxPluginUtils {
         log.info("---------------------------------------Configurations:------------------------------------");
         log.info("Maven plugin version: " + pluginVersion);
         log.info("Username: " + config.getUsername());
+        log.info("Password: " + config.getPassword());
         log.info("URL: " + config.getUrl());
         log.info("Project name: " + config.getProjectName());
         log.info("outputDirectory: " + config.getReportsDir());
@@ -71,6 +75,29 @@ public abstract class CxPluginUtils {
         log.info("Policy violations enabled: " + config.getEnablePolicyViolations());
         log.info("CxSAST thresholds enabled: " + config.getSastThresholdsEnabled());
         if (config.getSastThresholdsEnabled()) {
+        	if (config.getSastThresholdsEnabled()) {
+                String cxServerUrl = config.getUrl();
+                String cxUser = config.getUsername();
+                String cxPass = config.getPassword();
+                Double version = 9.0;
+                String sastVersion;
+                // Fetch SAST version using API call
+                try {
+                    sastVersion = SASTUtils.loginToServer(new URL(cxServerUrl), cxUser, cxPass);
+                    String[] sastVersionSplit = sastVersion.split("\\.");
+                    version = Double.parseDouble(sastVersionSplit[0] + "." + sastVersionSplit[1]);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                // Check if SAST version supports critical threshold
+                if (version >= 9.7) {
+                	log.info("CxSAST critical threshold: " + (config.getSastCriticalThreshold() == null ? "[No Threshold]" : config.getSastCriticalThreshold()));
+                }else {
+                	// Removing value of SAST Critical Threshold for SAST version prior to 9.6
+                	config.setSastCriticalThreshold(null);
+                }
+        	}
+        	
             log.info("CxSAST high threshold: " + (config.getSastHighThreshold() == null ? "[No Threshold]" : config.getSastHighThreshold()));
             log.info("CxSAST medium threshold: " + (config.getSastMediumThreshold() == null ? "[No Threshold]" : config.getSastMediumThreshold()));
             log.info("CxSAST low threshold: " + (config.getSastLowThreshold() == null ? "[No Threshold]" : config.getSastLowThreshold()));
