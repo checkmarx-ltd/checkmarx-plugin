@@ -60,7 +60,6 @@ public abstract class CxPluginUtils {
         log.info("---------------------------------------Configurations:------------------------------------");
         log.info("Maven plugin version: " + pluginVersion);
         log.info("Username: " + config.getUsername());
-        log.info("Password: " + config.getPassword());
         log.info("URL: " + config.getUrl());
         log.info("Project name: " + config.getProjectName());
         log.info("outputDirectory: " + config.getReportsDir());
@@ -74,34 +73,36 @@ public abstract class CxPluginUtils {
         log.info("Generate PDF report: " + config.getGeneratePDFReport());
         log.info("Policy violations enabled: " + config.getEnablePolicyViolations());
         log.info("CxSAST thresholds enabled: " + config.getSastThresholdsEnabled());
-        if (config.getSastThresholdsEnabled()) {
-        	if (config.getSastThresholdsEnabled()) {
-                String cxServerUrl = config.getUrl();
-                String cxUser = config.getUsername();
-                String cxPass = config.getPassword();
-                Double version = 9.0;
-                String sastVersion;
-                // Fetch SAST version using API call
-                try {
-                    sastVersion = SASTUtils.loginToServer(new URL(cxServerUrl), cxUser, cxPass);
-                    String[] sastVersionSplit = sastVersion.split("\\.");
-                    version = Double.parseDouble(sastVersionSplit[0] + "." + sastVersionSplit[1]);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                // Check if SAST version supports critical threshold
-                if (version >= 9.7) {
-                	log.info("CxSAST critical threshold: " + (config.getSastCriticalThreshold() == null ? "[No Threshold]" : config.getSastCriticalThreshold()));
-                }else {
-                	// Removing value of SAST Critical Threshold for SAST version prior to 9.6
-                	config.setSastCriticalThreshold(null);
-                }
-        	}
-        	
-            log.info("CxSAST high threshold: " + (config.getSastHighThreshold() == null ? "[No Threshold]" : config.getSastHighThreshold()));
-            log.info("CxSAST medium threshold: " + (config.getSastMediumThreshold() == null ? "[No Threshold]" : config.getSastMediumThreshold()));
-            log.info("CxSAST low threshold: " + (config.getSastLowThreshold() == null ? "[No Threshold]" : config.getSastLowThreshold()));
-        }
+		if (config.getSastThresholdsEnabled()) {
+			String cxServerUrl = config.getUrl();
+			String cxUser = config.getUsername();
+			String cxPass = config.getPassword();
+			Double version = 9.0;
+			String sastVersion;
+			// Fetch SAST version using API call
+			try {
+				sastVersion = SASTUtils.loginToServer(new URL(cxServerUrl), cxUser, cxPass);
+				String[] sastVersionSplit = sastVersion.split("\\.");
+				version = Double.parseDouble(sastVersionSplit[0] + "." + sastVersionSplit[1]);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			// Check if SAST version supports critical threshold
+			if (version >= 9.7) {
+				log.info("CxSAST critical threshold: " + (config.getSastCriticalThreshold() == null ? "[No Threshold]"
+						: config.getSastCriticalThreshold()));
+			} else {
+				// Removing value of SAST Critical Threshold for SAST version prior to 9.6
+				config.setSastCriticalThreshold(null);
+			}
+
+			log.info("CxSAST high threshold: "
+					+ (config.getSastHighThreshold() == null ? "[No Threshold]" : config.getSastHighThreshold()));
+			log.info("CxSAST medium threshold: "
+					+ (config.getSastMediumThreshold() == null ? "[No Threshold]" : config.getSastMediumThreshold()));
+			log.info("CxSAST low threshold: "
+					+ (config.getSastLowThreshold() == null ? "[No Threshold]" : config.getSastLowThreshold()));
+		}
         log.info("CxOSA enabled: " + config.isOsaEnabled());
         if (config.isOsaEnabled()) {
             log.info("osaIgnoreScopes: " + Arrays.toString(osaIgnoreScopes));
