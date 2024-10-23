@@ -281,6 +281,7 @@ public class CxScanPlugin extends AbstractMojo {
             }
             //resolve configuration
             CxScanConfig config = resolveConfigurationMap();
+            config.setPluginVersion(pluginVersion);
             CxClientDelegator delegator = CommonClientFactory.getClientDelegatorInstance(config, log);
 
             //print configuration
