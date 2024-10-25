@@ -472,8 +472,9 @@ public class CxScanPlugin extends AbstractMojo {
         scanConfig.setScanComment(comment);
         scanConfig.setIncremental(isIncrementalScan);
         scanConfig.setSynchronous(isSynchronous);
-        boolean thresholdEnabled = (criticalSeveritiesThreshold > 0 || highSeveritiesThreshold > 0 || mediumSeveritiesThreshold > 0 || lowSeveritiesThreshold > 0);//todo check null
+        boolean thresholdEnabled = (criticalSeveritiesThreshold >= 0 || highSeveritiesThreshold >= 0 || mediumSeveritiesThreshold >= 0 || lowSeveritiesThreshold >= 0);//todo check null
         scanConfig.setSastThresholdsEnabled(thresholdEnabled);
+        scanConfig.setSastCriticalThreshold(criticalSeveritiesThreshold);
         scanConfig.setSastHighThreshold(highSeveritiesThreshold);
         scanConfig.setSastMediumThreshold(mediumSeveritiesThreshold);
         scanConfig.setSastLowThreshold(lowSeveritiesThreshold);
@@ -491,10 +492,9 @@ public class CxScanPlugin extends AbstractMojo {
         if(osaEnabled){
         	scanConfig.addScannerType(ScannerType.OSA);
         }
-        boolean osaThresholdEnabled = (osaHighSeveritiesThreshold > 0 || osaMediumSeveritiesThreshold > 0 || osaLowSeveritiesThreshold > 0);//todo check null
+        boolean osaThresholdEnabled = (osaHighSeveritiesThreshold >= 0 || osaMediumSeveritiesThreshold >= 0 || osaLowSeveritiesThreshold >= 0);//todo check null
         scanConfig.setOsaGenerateJsonReport(osaGenerateJsonReport);
         scanConfig.setOsaThresholdsEnabled(osaThresholdEnabled);
-        scanConfig.setSastCriticalThreshold(criticalSeveritiesThreshold);
         scanConfig.setOsaHighThreshold(osaHighSeveritiesThreshold);
         scanConfig.setOsaMediumThreshold(osaMediumSeveritiesThreshold);
         scanConfig.setOsaLowThreshold(osaLowSeveritiesThreshold);

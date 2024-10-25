@@ -74,27 +74,10 @@ public abstract class CxPluginUtils {
         log.info("Policy violations enabled: " + config.getEnablePolicyViolations());
         log.info("CxSAST thresholds enabled: " + config.getSastThresholdsEnabled());
 		if (config.getSastThresholdsEnabled()) {
-			String cxServerUrl = config.getUrl();
-			String cxUser = config.getUsername();
-			String cxPass = config.getPassword();
-			Double version = 9.0;
-			String sastVersion;
-			// Fetch SAST version using API call
-			try {
-				sastVersion = SASTUtils.loginToServer(new URL(cxServerUrl), cxUser, cxPass);
-				String[] sastVersionSplit = sastVersion.split("\\.");
-				version = Double.parseDouble(sastVersionSplit[0] + "." + sastVersionSplit[1]);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			// Check if SAST version supports critical threshold
-			if (version >= 9.7) {
+			if (config.getSastCriticalThreshold()!=null) {
 				log.info("CxSAST critical threshold: " + (config.getSastCriticalThreshold() == null ? "[No Threshold]"
 						: config.getSastCriticalThreshold()));
-			} else {
-				// Removing value of SAST Critical Threshold for SAST version prior to 9.6
-				config.setSastCriticalThreshold(null);
-			}
+			} 
 
 			log.info("CxSAST high threshold: "
 					+ (config.getSastHighThreshold() == null ? "[No Threshold]" : config.getSastHighThreshold()));
@@ -122,12 +105,16 @@ public abstract class CxPluginUtils {
     	StringBuilder builder = new StringBuilder();
     	builder.append("********************************************");
     	builder.append(" The Build Failed for the Following Reasons: ");
+    	builder.append("\n");
     	builder.append("********************************************");
+    	builder.append("\n");
     	appendError(ret.getGeneralException(), builder);
+    	builder.append("\n");
     	
     	String[] lines = thDescription.split("\\n");
         for (String s : lines) {
             builder.append(s);
+            builder.append("\n");
         }
         builder.append("-----------------------------------------------------------------------------------------\n");
     	
