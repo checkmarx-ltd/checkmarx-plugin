@@ -474,19 +474,19 @@ public class CxScanPlugin extends AbstractMojo {
         scanConfig.setSynchronous(isSynchronous);
         boolean thresholdEnabled = (criticalSeveritiesThreshold >= 0 || highSeveritiesThreshold >= 0 || mediumSeveritiesThreshold >= 0 || lowSeveritiesThreshold >= 0);//todo check null
         scanConfig.setSastThresholdsEnabled(thresholdEnabled);
-        if (criticalSeveritiesThreshold != -1) {
+        if (criticalSeveritiesThreshold >= 0) {
             scanConfig.setSastCriticalThreshold(criticalSeveritiesThreshold);
         }
 
-        if (highSeveritiesThreshold != -1) {
+        if (highSeveritiesThreshold >= 0) {
             scanConfig.setSastHighThreshold(highSeveritiesThreshold);
         }
 
-        if (mediumSeveritiesThreshold != -1) {
+        if (mediumSeveritiesThreshold >= 0) {
             scanConfig.setSastMediumThreshold(mediumSeveritiesThreshold);
         }
 
-        if (lowSeveritiesThreshold != -1) {
+        if (lowSeveritiesThreshold >= 0) {
             scanConfig.setSastLowThreshold(lowSeveritiesThreshold);
         }
 
