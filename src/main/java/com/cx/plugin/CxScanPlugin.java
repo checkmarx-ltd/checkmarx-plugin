@@ -474,10 +474,22 @@ public class CxScanPlugin extends AbstractMojo {
         scanConfig.setSynchronous(isSynchronous);
         boolean thresholdEnabled = (criticalSeveritiesThreshold >= 0 || highSeveritiesThreshold >= 0 || mediumSeveritiesThreshold >= 0 || lowSeveritiesThreshold >= 0);//todo check null
         scanConfig.setSastThresholdsEnabled(thresholdEnabled);
-        scanConfig.setSastCriticalThreshold(criticalSeveritiesThreshold);
-        scanConfig.setSastHighThreshold(highSeveritiesThreshold);
-        scanConfig.setSastMediumThreshold(mediumSeveritiesThreshold);
-        scanConfig.setSastLowThreshold(lowSeveritiesThreshold);
+        if (criticalSeveritiesThreshold != -1) {
+            scanConfig.setSastCriticalThreshold(criticalSeveritiesThreshold);
+        }
+
+        if (highSeveritiesThreshold != -1) {
+            scanConfig.setSastHighThreshold(highSeveritiesThreshold);
+        }
+
+        if (mediumSeveritiesThreshold != -1) {
+            scanConfig.setSastMediumThreshold(mediumSeveritiesThreshold);
+        }
+
+        if (lowSeveritiesThreshold != -1) {
+            scanConfig.setSastLowThreshold(lowSeveritiesThreshold);
+        }
+
         scanConfig.setGeneratePDFReport(generatePDFReport);
             
         for (String folder : folderExclusions){
