@@ -74,7 +74,9 @@ public abstract class CxPluginUtils {
         log.info("Policy violations enabled: " + config.getEnablePolicyViolations());
         log.info("CxSAST thresholds enabled: " + config.getSastThresholdsEnabled());
 		if (config.getSastThresholdsEnabled()) {
-			if (config.getSastCriticalThreshold()!=null) {
+			Double version = getSASTVersion(config, log);
+			// Check if SAST version supports critical threshold
+			if (version >= 9.7) {
 				log.info("CxSAST critical threshold: " + (config.getSastCriticalThreshold() == null ? "[No Threshold]"
 						: config.getSastCriticalThreshold()));
 			} 
@@ -99,6 +101,25 @@ public abstract class CxPluginUtils {
         log.info("------------------------------------------------------------------------------------------");
         //todo check log.info("fileExclusions: " + Arrays.toString(fileExclusions));
     }
+
+	private static Double getSASTVersion(CxScanConfig config, Logger log) {
+		String cxServerUrl = config.getUrl();
+		String cxUser = config.getUsername();
+		String cxPass = config.getPassword();
+		Double version = 9.0;
+		String sastVersion;
+		// Fetch SAST version using API call
+		try {
+			sastVersion = SASTUtils.loginToServer(new URL(cxServerUrl), cxUser, cxPass);
+			String[] sastVersionSplit = sastVersion.split("\\.");
+			if(sastVersionSplit != null && sastVersionSplit.length > 1) {
+			version = Double.parseDouble(sastVersionSplit[0] + "." + sastVersionSplit[1]);
+			}
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		}
+		return version;
+	}
 
     public static void printBuildFailure(String thDescription, ScanResults ret, Logger log) throws MojoFailureException
     {
