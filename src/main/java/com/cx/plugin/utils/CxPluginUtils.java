@@ -1,23 +1,26 @@
 package com.cx.plugin.utils;
 
 
+import com.cx.plugin.utils.SASTUtils;
 import com.cx.restclient.configuration.CxScanConfig;
 import com.cx.restclient.dto.ScanResults;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
 import org.slf4j.Logger;
+import org.sonatype.plexus.components.sec.dispatcher.DefaultSecDispatcher;
 
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
-
 import static com.cx.plugin.CxScanPlugin.SOURCES_ZIP_NAME;
 
 /**
@@ -70,11 +73,21 @@ public abstract class CxPluginUtils {
         log.info("Generate PDF report: " + config.getGeneratePDFReport());
         log.info("Policy violations enabled: " + config.getEnablePolicyViolations());
         log.info("CxSAST thresholds enabled: " + config.getSastThresholdsEnabled());
-        if (config.getSastThresholdsEnabled()) {
-            log.info("CxSAST high threshold: " + (config.getSastHighThreshold() == null ? "[No Threshold]" : config.getSastHighThreshold()));
-            log.info("CxSAST medium threshold: " + (config.getSastMediumThreshold() == null ? "[No Threshold]" : config.getSastMediumThreshold()));
-            log.info("CxSAST low threshold: " + (config.getSastLowThreshold() == null ? "[No Threshold]" : config.getSastLowThreshold()));
-        }
+		if (config.getSastThresholdsEnabled()) {
+			Double version = getSASTVersion(config, log);
+			// Check if SAST version supports critical threshold
+			if (version >= 9.7) {
+				log.info("CxSAST critical threshold: " + (config.getSastCriticalThreshold() == null ? "[No Threshold]"
+						: config.getSastCriticalThreshold()));
+			} 
+
+			log.info("CxSAST high threshold: "
+					+ (config.getSastHighThreshold() == null ? "[No Threshold]" : config.getSastHighThreshold()));
+			log.info("CxSAST medium threshold: "
+					+ (config.getSastMediumThreshold() == null ? "[No Threshold]" : config.getSastMediumThreshold()));
+			log.info("CxSAST low threshold: "
+					+ (config.getSastLowThreshold() == null ? "[No Threshold]" : config.getSastLowThreshold()));
+		}
         log.info("CxOSA enabled: " + config.isOsaEnabled());
         if (config.isOsaEnabled()) {
             log.info("osaIgnoreScopes: " + Arrays.toString(osaIgnoreScopes));
@@ -89,17 +102,40 @@ public abstract class CxPluginUtils {
         //todo check log.info("fileExclusions: " + Arrays.toString(fileExclusions));
     }
 
+	private static Double getSASTVersion(CxScanConfig config, Logger log) {
+		String cxServerUrl = config.getUrl();
+		String cxUser = config.getUsername();
+		String cxPass = config.getPassword();
+		Double version = 9.0;
+		String sastVersion;
+		// Fetch SAST version using API call
+		try {
+			sastVersion = SASTUtils.loginToServer(new URL(cxServerUrl), cxUser, cxPass);
+			String[] sastVersionSplit = sastVersion.split("\\.");
+			if(sastVersionSplit != null && sastVersionSplit.length > 1) {
+			version = Double.parseDouble(sastVersionSplit[0] + "." + sastVersionSplit[1]);
+			}
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		}
+		return version;
+	}
+
     public static void printBuildFailure(String thDescription, ScanResults ret, Logger log) throws MojoFailureException
     {
     	StringBuilder builder = new StringBuilder();
     	builder.append("********************************************");
     	builder.append(" The Build Failed for the Following Reasons: ");
+    	builder.append("\n");
     	builder.append("********************************************");
+    	builder.append("\n");
     	appendError(ret.getGeneralException(), builder);
+    	builder.append("\n");
     	
     	String[] lines = thDescription.split("\\n");
         for (String s : lines) {
             builder.append(s);
+            builder.append("\n");
         }
         builder.append("-----------------------------------------------------------------------------------------\n");
     	

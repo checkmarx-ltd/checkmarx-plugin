@@ -125,6 +125,13 @@ public class CxScanPlugin extends AbstractMojo {
     @Parameter(defaultValue = "true", property = "cx.generatePDFReport")
     private boolean generatePDFReport;
 
+    /**
+     * Configure a threshold for the Critical Severity Vulnerabilities.
+     * The build will fail if the sum of Critical Severity Vulnerabilities is larger than the threshold.
+     * Leave empty to ignore threshold.
+     */
+    @Parameter(defaultValue = "-1", property = "cx.criticalSeveritiesThreshold")
+    private int criticalSeveritiesThreshold;
 
     /**
      * Configure a threshold for the High Severity Vulnerabilities.
@@ -274,6 +281,7 @@ public class CxScanPlugin extends AbstractMojo {
             }
             //resolve configuration
             CxScanConfig config = resolveConfigurationMap();
+            config.setPluginVersion(pluginVersion);
             CxClientDelegator delegator = CommonClientFactory.getClientDelegatorInstance(config, log);
 
             //print configuration
@@ -464,11 +472,24 @@ public class CxScanPlugin extends AbstractMojo {
         scanConfig.setScanComment(comment);
         scanConfig.setIncremental(isIncrementalScan);
         scanConfig.setSynchronous(isSynchronous);
-        boolean thresholdEnabled = (highSeveritiesThreshold > 0 || mediumSeveritiesThreshold > 0 || lowSeveritiesThreshold > 0);//todo check null
+        boolean thresholdEnabled = (criticalSeveritiesThreshold >= 0 || highSeveritiesThreshold >= 0 || mediumSeveritiesThreshold >= 0 || lowSeveritiesThreshold >= 0);//todo check null
         scanConfig.setSastThresholdsEnabled(thresholdEnabled);
-        scanConfig.setSastHighThreshold(highSeveritiesThreshold);
-        scanConfig.setSastMediumThreshold(mediumSeveritiesThreshold);
-        scanConfig.setSastLowThreshold(lowSeveritiesThreshold);
+        if (criticalSeveritiesThreshold >= 0) {
+            scanConfig.setSastCriticalThreshold(criticalSeveritiesThreshold);
+        }
+
+        if (highSeveritiesThreshold >= 0) {
+            scanConfig.setSastHighThreshold(highSeveritiesThreshold);
+        }
+
+        if (mediumSeveritiesThreshold >= 0) {
+            scanConfig.setSastMediumThreshold(mediumSeveritiesThreshold);
+        }
+
+        if (lowSeveritiesThreshold >= 0) {
+            scanConfig.setSastLowThreshold(lowSeveritiesThreshold);
+        }
+
         scanConfig.setGeneratePDFReport(generatePDFReport);
             
         for (String folder : folderExclusions){
@@ -483,7 +504,7 @@ public class CxScanPlugin extends AbstractMojo {
         if(osaEnabled){
         	scanConfig.addScannerType(ScannerType.OSA);
         }
-        boolean osaThresholdEnabled = (osaHighSeveritiesThreshold > 0 || osaMediumSeveritiesThreshold > 0 || osaLowSeveritiesThreshold > 0);//todo check null
+        boolean osaThresholdEnabled = (osaHighSeveritiesThreshold >= 0 || osaMediumSeveritiesThreshold >= 0 || osaLowSeveritiesThreshold >= 0);//todo check null
         scanConfig.setOsaGenerateJsonReport(osaGenerateJsonReport);
         scanConfig.setOsaThresholdsEnabled(osaThresholdEnabled);
         scanConfig.setOsaHighThreshold(osaHighSeveritiesThreshold);
